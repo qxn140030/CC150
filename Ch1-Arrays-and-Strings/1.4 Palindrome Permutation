@@ -1,0 +1,74 @@
+Question: Given a string, write a function to check if it is a permutation of a palindrome. A palindrome is a word or phrase that is the
+          same forwards and backwards. A permutation is a rearrangement of letters. The palindrome does not need to be limited to just
+          dictionary words.
+Example: Input:  Tact Coa
+         Output: True (permutations: "taco cat", "atco cta", etc.)
+         
+public boolean palinPermu(String s) {
+  // assuming an English alphabet.
+	int[] counter = new int[26];
+	// Character.getNumericValue(char ch) will reture a number range in [10, 35] for A-Z and a-z.
+	int a = Character.getNumericValue('a');
+	int z = Character.getNumericValue('z');
+	for (int i = 0; i < s.length(); i++) {
+		int val = Character.getNumericValue(s.charAt(i));
+		// make sure the range of the index is [0, 25].
+		int index = val - 10;
+		if (val >= a && val <= z) {
+			counter[index]++;
+		}
+	}
+	boolean flag = false;
+	for (int i = 0; i < 26; i++) {
+		if (counter[i] % 2 == 1) {
+			if (flag) {
+				return false;
+			}
+			flag = true;
+		}
+	}
+	return true;
+}
+	
+instead of checking the number of odd counts at the end, we can check as we go along.
+public boolean palinPermu(String s) {
+	int[] counter = new int[26];
+	int a = Character.getNumericValue('a');
+	int z = Character.getNumericValue('z');
+	int oddCount = 0;
+	for (int i = 0; i < s.length(); i++) {
+		int val = Character.getNumericValue(s.charAt(i));
+		int index = val - 10;
+		if (val >= a && val <= z) {
+			counter[index]++;
+			if (counter[index] % 2 == 1) {
+				oddCount++;
+			} else {
+				oddCount--;
+			}
+		}
+	}
+	return oddCount <= 1;
+}
+
+we just need to know if the count is even or odd. so we use a single integer as a bit vector.
+public boolean palinPermu(String s) {
+	int[] counter = new int[26];
+	int a = Character.getNumericValue('a');
+	int z = Character.getNumericValue('z');
+	int rst = 0;
+	for (int i = 0; i < s.length(); i++) {
+		int val = Character.getNumericValue(s.charAt(i));
+		int index = val - 10;
+		if (val >= a && val <= z) {
+			int mask = 1 << index;
+			if ((rst & mask) == 0) {
+				rst |= mask;
+			} else {
+				rst &= ~mask;
+			}
+		}
+	}
+	// a number has exactly one 1 when (rst & (rst - 1)) == 0.
+	return rst == 0 || (rst & (rst - 1)) == 0;
+}
