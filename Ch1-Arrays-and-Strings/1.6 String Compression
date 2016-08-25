@@ -1,0 +1,50 @@
+Question: Implement a method to perform basic string compression using the counts of repeated characters. For example, the string 
+          "aabcccccaaa" would become "a2b1c5a3". If the "compressed" string would not become smaller than the original string, your method
+          should return the original string. You can assume the string has only uppercase and lowercase letters (a-z).
+          
+public String compress(String s) {
+	StringBuilder sb = new StringBuilder();
+	int count = 1;
+	for (int i = 0; i < s.length(); i++) {
+		if (i >= s.length() - 1 || s.charAt(i) != s.charAt(i + 1)) {
+			sb.append(s.charAt(i)).append(count);
+			count = 1;
+		} else {
+			count++;
+		}
+	}
+	return sb.length() < s.length() ? sb.toString() : s;
+}
+
+public String compress(String s) {
+	int finalLen = comLen(s);
+	// to avoid creating a string we never use.
+	if (finalLen >= s.length()) {
+		return s;
+	}
+	// other benefit of the approach is we can initialize StringBuilder to its necessary capacity up-front.
+	StringBuilder sb = new StringBuilder(finalLen);
+	int count = 1;
+	for (int i = 0; i < s.length(); i++) {
+		if (i >= s.length() - 1 || s.charAt(i) != s.charAt(i + 1)) {
+			sb.append(s.charAt(i)).append(count);
+			count = 1;
+		} else {
+			count++;
+		}
+	}
+	return sb.length() < s.length() ? sb.toString() : s;
+}
+private int comLen(String s) {
+	int len = 0;
+	int count = 1;
+	for (int i = 0; i < s.length(); i++) {
+		if (i >= s.length() - 1 || s.charAt(i) != s.charAt(i + 1)) {
+			len = 1 + String.valueOf(count).length();
+			count = 1;
+		} else {
+			count++;
+		}
+	}
+	return len;
+}
