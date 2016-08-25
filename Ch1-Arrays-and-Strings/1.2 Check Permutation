@@ -1,0 +1,35 @@
+Question: Given two strings, write a method to decide if one is a permutation of the other.
+
+1, if it's case sensitive; if whitespace is significant.
+assuming "Yes" for both cases.
+
+public boolean isPermu(String s1, String s2) {
+	if (s1.length() != s2.length()) {
+		return false;
+	}
+	return sort(s1).equals(sort(s2));
+}
+private String sort(String s) {
+	char[] tmp = s.toCharArray();
+	Arrays.sort(tmp);
+	return new String(tmp);
+} 
+
+public boolean isPermu(String s1, String s2) {
+	if (s1.length() != s2.length()) {
+		return false;
+	}
+	int[] chars = new int[128];              // Assumption
+	for (int i = 0; i < s1.length(); i++) {
+		int index = s1.charAt(i);
+		chars[index]++;
+	}
+	for (int i = 0; i < s2.length(); i++) {
+		int index = s2.charAt(i);
+		chars[index]--;
+		if (chars[index] < 0) {
+			return false;
+		}
+	}
+	return true;
+}
