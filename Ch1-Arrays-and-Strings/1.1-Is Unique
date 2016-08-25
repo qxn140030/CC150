@@ -1,0 +1,27 @@
+Question: Implement an algorithm to determine if a string has all unique characters. What if you cannot ues additional data structures?
+
+1, it is an ASCII string or a Unicode string?
+assuming the character set is ASCII (non-extended), 128-character alphabet. 256 characters in extended ASCII.
+
+public boolean isUnique(String s) {
+	if (s.length() > 128) {
+		return false;
+	}
+	boolean[] char_set = new boolean[128];
+	for (int i = 0; i < s.length(); i++) {
+		int index = s.charAt(i);
+		if (char_set[index]) {
+			return false;
+		}
+		char_set[index] = true;
+	}
+	return true;
+}
+
+the time complexity is O(min(c, n)), where c is the size of the character set, n is the length of the string.
+the space complexity id O(c).
+
+2, if we cannot ues additional data structures, we can do the following:
+2.1, compare every character of the string to every others. this will take O(n^2) time and O(1) space.
+2.2, if we are allowed to modify the input string, we can sort it in O(nlogn) time, then linearly check neighbor characters.
+     but many sorting algorithms take up extra space.
