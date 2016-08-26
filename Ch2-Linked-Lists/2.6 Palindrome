@@ -1,0 +1,83 @@
+Question: Implement a function to check if a linked list is a plindrome.
+
+Solution 1: Reverse and Compare, less maintainable.
+public boolean isPalindrome(ListNode head) {
+  ListNode reversed = reverse(head);
+  return isEqual(head, reversed);
+}
+private ListNode reverse(ListNode head) {
+  ListNode pre = null;
+  while (head != null) {
+    ListNode tmp = head.next;
+    head.next = pre;
+    pre = head;
+    head = tmp;
+  }
+  return pre;
+}
+private isEqual(ListNode l1, ListNode l2) {
+  while (l1 != null && l2 != null) {
+    if (l1.val != l2.val) {
+      return false;
+    }
+    l1 = l1.next;
+    l2 = l2.next;
+  }
+  return l1 == null && l2 == null;
+}
+
+Solution 2: Iterarive approach with a stack
+public boolean isPalindrome(ListNode head) {
+  ListNode fast = head;
+  ListNode slow = head;
+  Stack<Integer> stack = new Stack<Integer>();
+  while (fast != null && fast.next != null) {
+    stack.push(slow.val);
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+  // has odd number of elements, so skip the middle element.
+  if (fast != null) {
+    slow = slow.next;
+  }
+  while (slow != null) {
+    if (stack.pop() != slow.val) {
+      return false;
+    }
+    slow = slow.next;
+  }
+  return true;
+}
+
+Solution 3: Recursive Approach
+class ResultType {
+  public ListNode node;
+  public boolean rst;
+}
+public boolean isPalindrome(ListNode head) {
+  int len = length(head);
+  ResultType rt = helper(head, len);
+  return rt.rst;
+}
+public ResultType helper(ListNode head, int len) {
+  if (head == null || len <= 0) {       // even number of nodes
+    return new ResultType(head, true);
+  } else if (len == 1) {                // odd number of nodes
+    return new ResultType(head.next, true);
+  }
+  ResultType rt = helper(head.next, len - 2);
+  if (!rt.rst || rt.node == null) {
+    return rt;
+  }
+  rt.rst = (head.val == rt.node.val);
+  rt.node = rt.node.next;
+  return rt;
+}
+public int length(ListNode head) {
+  int len = 0;
+  while (head != null) {
+    len++;
+    head = head.next;
+  }
+  return len;
+}
