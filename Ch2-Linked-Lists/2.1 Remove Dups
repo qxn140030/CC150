@@ -1,0 +1,43 @@
+Question: Write code to remove duplicates from an unsorted linked list.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public ListNode removeDups(ListNode head) {
+  ListNode dummy = new ListNode(0);
+  dummy.next = head;
+  HashSet<ListNode> hs = new HashSet<ListNode>();
+  head = dummy;
+  while (head.next != null) {
+    if (hs.contains(head.next.val)) {
+      head.next = head.next.next;
+    } else {
+      hs.add(head.next.val);
+      head = head.next;
+    }
+  }
+  return dummy.next;
+}
+
+Follow up: How would you solve this problem if a temporary buffer is not allowed?
+// two pointers
+public ListNode removeDups(ListNode head) {
+  ListNode current = head;
+  while (current != null) {
+    ListNode runner = current;
+    while (runner.next != null) {
+      if (runner.next.val == current.val) {
+        runner.next = runner.next.next;
+      } else {
+        runner = runner.next;
+      }
+    } 
+    current = current.next;
+  }
+  return head;
+}
