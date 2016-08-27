@@ -1,0 +1,22 @@
+Question: Imagine a (literal) stack of plates. If the stack gets too high, it might topple. Therefore, in real life, we would likely
+          start a new stack when the previous stack exceeds some threshold. Implement a data structure SetOfStacks that mimics this. 
+          SetOfStacks should be composed of several stacks and should create a new stack once the previous one exceeds capacity. 
+          SetOfStacks.push() and SetOfStacks.pop() should behave identically to a single stack.
+// not right answer...          
+class SetOfStacks {
+  List<Stack> stacks = new ArrayList<>();
+  public int capacity;
+  public SetOfStacks(int capacity) {
+    this.capacity = capacity;
+  }
+  public void push(int val) {
+    Stack last = stacks.get(stacks.size() - 1);
+    if (last != null && last.size() < capacity) {
+      last.push(val);
+    } else {
+      Stack stack = new Stack(capacity);
+      stack.push(val);
+      stacks.add(stack);
+    }
+  }
+}
