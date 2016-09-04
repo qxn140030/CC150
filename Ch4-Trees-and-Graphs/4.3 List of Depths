@@ -1,0 +1,46 @@
+Given a binary tree, design an algorithm which creates a linked list of all the nodes at each depth (e.g., if you have a tree
+with depth D, you'll have D linked lists).
+
+Solution 1: DFS. Time complexity: O(n).
+Space complexity: use O(logn) recursive calls (in a balanced tree), returns O(n) data, so the extra O(logn) space usage from
+the recursive implementation is dwarfed by the O(n) data.
+List<LinkedList<TreeNode>> createLevelLinkedList(TreeNode root) {
+    List<LinkedList<TreeNode>> rst = new ArrayList<LinkedList<TreeNode>>();
+    helper(root, rst, 0);
+    return rst;
+}
+void helper(TreeNode root, List<LinkedList<TreeNode>> rst, int level) {
+    if (root == null) {
+        return;
+    }
+    if (rst.size() == level) {
+        LinkedList<TreeNode> list = new LinkedList<TreeNode>();
+        rst.add(list);
+    }
+    rst.get(level).add(root);
+    helper(root.left, rst, level + 1);
+    helper(root.right, rst, level + 1);
+}
+
+Solution 2: BFS. Time complexity: O(n). Space complexity: O(n).
+List<LinkedList<TreeNode>> createLevelLinkedList(TreeNode root) {
+    List<LinkedList<TreeNode>> rst = new ArrayList<LinkedList<TreeNode>>();
+    LinkedList<TreeNode> cur = new LinkedList<TreeNode>();
+    if (root != null) {
+        cur.add(root);
+    }
+    while (cur.size() > 0) {
+        rst.add(cur);
+        LinkedList<TreeNode> parents = cur;
+        cur = new LinkedList<TreeNode>();
+        for (TreeNode node : parents) {
+            if (node.left != null) {
+                cur.add(node.left);
+            }
+            if (node.right != null) {
+                cur.add(node.right);
+            }
+        }
+    }
+    return rst;
+}
