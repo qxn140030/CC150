@@ -1,0 +1,37 @@
+Implement a function to check if a binary tree is a binary search tree.
+
+Solution 1: In-Order-Traversal. cannot handle duplicate values in the tree properly.
+Integer last = null;       // use Integer instead of int so that we can know when last has been set to a value.
+boolean checkBST(TreeNode root) {
+    if (root == null) {
+        return true;
+    }
+    if (!checkBST(root.left)) {
+        return false;
+    }
+    if (last != null && root.val <= last) {
+        return false;
+    }
+    last = root.val;
+    if (!checkBST(root.left)) {
+        return false;
+    }
+    return true;
+}
+
+Solution 2: The Min/Max Solution. time complexity: O(n). space complexity: O(logn). O(logn) recursive calls on the stack.
+boolean checkBST(TreeNode root) {
+    return check(root, null, null);
+}
+boolean check(TreeNode root, Integer min, Integer max) {
+    if (root == null) {
+        return true;
+    }
+    if ((min != null && root.val <= min) || (max != null && root.val > max)) {
+        return false;
+    }
+    if (!check(root.left, min, root.val) || !check(root.right, root.val, max)) {
+        return false;
+    }
+    return true;
+}
