@@ -1,0 +1,38 @@
+Implement a function to check if a binary tree is balanced. For the purposes of this question, a balanced tree is defined to
+be a tree such that the heights of the two subtrees of any node never differ by more than one.
+
+Solution 1: not efficient. On each node, we recurse through its entire subtree. getHeight function is called repeatedly on
+the same nodes. Time complexity: O(nlogn), since each node is "touched" onece per node above it.
+boolean isBalanced(TreeNode root) {
+    if (root == null) {
+        return true;
+    }
+    int diff = getHeight(root.left) - getHeight(root.right);
+    if (Math.abs(diff) > 1) {
+        return false;
+    }
+    return isBalanced(root.left) && isBalanced(root.right);
+}
+int getHeight(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    return Math.max(getHeight(root.left), getHeight(root.right)) + 1;
+}
+
+Solution 2: getHeight can check if the tree is balanced at the same time as it's checking heights. just return an error code.
+Time complexity: O(n). Space complexity: O(h).
+boolean isBalanced(TreeNode root) {
+    return getHeight(root) != -1;
+}
+int getHeight(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    int left = getHeight(root.left);
+    int right = getHeight(root.right);
+    if (left == -1 || right == -1 || Math.abs(left - right) > 1) {
+        return -1;
+    }
+    return Math.max(left, right) + 1;
+}
