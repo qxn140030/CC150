@@ -1,45 +1,45 @@
-Question: Given two singly linked lists, determine if the two lists intersect. Return the intersecting node. Note that the intersection
-          is defined based on reference, not value. That is, if the kth node of the first linked list is the exact same node (by
-          reference) as the jth node of the second list, then they are intersecting.
+Given two singly linked lists, determine if the two lists intersect. Return the intersecting node. Note that the intersection is
+defined based on reference, not value. That is, if the kth node of the first linked list is the exact same node (by reference) as
+the jth node of the second list, then they are intersecting.
           
 public ListNode findIntersection(ListNode l1, ListNode l2) {
-  ResultType rt1 = getTailAndLength(l1);
-  ResultType rt2 = getTailAndLength(l2);
-  if (rt1.tail != rt2.tail) {
-    return null;
-  }
-  ListNode shorter = rt1.length < rt2.length ? l1 : l2;
-  ListNode longer = rt1.length < rt2.length ? l2 : l1;
-  longer = getKth(longer, Math.abs(rt1.length - rt2.length));
-  while (shorter != longer) {
-    shorter = shorter.next;
-    longer = longer.next;
-  }
-  return shorter;
+    ResultType rt1 = getTailAndLength(l1);
+    ResultType rt2 = getTailAndLength(l2);
+    if (rt1.tail != rt2.tail) {
+        return null;
+    }
+    ListNode shorter = rt1.length < rt2.length ? l1 : l2;
+    ListNode longer = rt1.length < rt2.length ? l2 : l1;
+    longer = getKth(longer, Math.abs(rt1.length - rt2.length));
+    while (shorter != longer) {
+        shorter = shorter.next;
+        longer = longer.next;
+    }
+    return shorter;
 }
 public ListNode getKth(ListNode head, int k) {
-  while (k > 0 && head != null) {
-    k--;
-    head = head.next;
-  }
-  return head;
+    while (k > 0 && head != null) {
+        k--;
+        head = head.next;
+    }
+    return head;
 }
 class ResultType {
-  public ListNode tail;
-  public int length;
-  public ResultType(ListNode tail, int length) {
-    this.tail = tail;
-    this.length = length;
-  }
+    public ListNode tail;
+    public int length;
+    public ResultType(ListNode tail, int length) {
+        this.tail = tail;
+        this.length = length;
+    }
 }
 public ResultType getTailAndLength(ListNode head) {
-  if (head == null) {
-    return null;
-  }
-  int len = 0;
-  while (head != null) {
-    len++;
-    head = head.next;
-  }
-  return new ResultType(head, len);
+    if (head == null) {
+        return null;
+    }
+    int len = 0;
+    while (head != null) {
+        len++;
+        head = head.next;
+    }
+    return new ResultType(head, len);
 }
