@@ -1,22 +1,21 @@
-Question: Given a circular linked list, implement an algorithm that returns the node at the beginning of the loop.
+Given a circular linked list, implement an algorithm that returns the node at the beginning of the loop.
 
 public ListNode findBeginning(ListNode head) {
-  ListNode slow = head;
-  ListNode fast = head;
-  while (fast != null && fast.next != null) {
-    slow = slow.next;
-    fast = fast.next.next;
-    if (slow == fast) {
-      break;
+    ListNode slow = head;
+    ListNode fast = head;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow == fast) {
+            break;
+        }
+    }  
+    if (fast == null || fast.next == null) {     // no loop
+        return null;
     }
-  }
-  // no loop
-  if (fast == null || fast.next == null) {
-    return null;
-  }
-  while (head != slow) {
-    head = head.next;
-    slow = slow.next;
-  }
-  return head;
+    while (head != slow) {
+        head = head.next;
+        slow = slow.next;
+    }
+    return head;
 }
