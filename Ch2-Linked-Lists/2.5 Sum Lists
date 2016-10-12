@@ -1,87 +1,83 @@
-Question: You have two numbers represented by a linked list, where each node contains a single digit. The digits are stored in reverse
-          order, such that the 1's digit is at the head of the list. Write a function that adds the two numbers and returns the sum as a 
-          linked list.
-
-Example: Input:  (7 -> 1 -> 6) + (5 -> 9 -> 2). That is, 617 + 295.
-         Output: 2 -> 1 -> 9. That is, 912.
+You have two numbers represented by a linked list, where each node contains a single digit. The digits are stored in reverse order,
+such that the 1's digit is at the head of the list. Write a function that adds the two numbers and returns the sum as a linked list.
+Example: 
+Input:  (7 -> 1 -> 6) + (5 -> 9 -> 2). That is, 617 + 295.
+Output: 2 -> 1 -> 9. That is, 912.
           
 public ListNode addLists(ListNode l1, ListNode l2) {
-  ListNode dummy = new ListNode(0);
-  ListNode head = dummy;
-  int carry = 0;
-  while (l1 != null || l2 != null) {
-    val1 = l1 != null ? l1.val : 0;
-    val2 = l2 != null ? l2.val : 0;
-    int sum = val1 + val2 + carry;
-    head.next = new ListNode(sum % 10);
-    carry = sum / 10;
-    head = head.next;
-    l1 = l1.next;
-    l2 = l2.next;
-  }
-  if (carry > 0) {
-    head.next = new ListNode(carry);
-  }
-  return dummy.next;
+    ListNode dummy = new ListNode(0);
+    ListNode head = dummy;
+    int carry = 0;
+    while (l1 != null || l2 != null) {
+        val1 = l1 != null ? l1.val : 0;
+        val2 = l2 != null ? l2.val : 0;
+        int sum = val1 + val2 + carry;
+        head.next = new ListNode(sum % 10);
+        carry = sum / 10;
+        head = head.next;
+        l1 = l1.next;
+        l2 = l2.next;
+    }
+    if (carry > 0) {
+        head.next = new ListNode(carry);
+    }
+    return dummy.next;
 }
 
 Follow up: suppose the digits are stored in forward order. 
 Input:  (6 -> 1 -> 7) + (2 -> 9 -> 5). That is, 617 + 295.
 Output: 9 -> 1 -> 2. That is, 912.
 
-// create a wrapper class called PartialSum.
-class PartialSum {
-  public ListNode sum = null;
-  public int carry = 0;
+class PartialSum {               // create a wrapper class called PartialSum.
+    public ListNode sum = null;
+    public int carry = 0;
 }
 public ListNode addLists(ListNode l1, ListNode l2) {
-  int len1 = length(l1);
-  int len2 = length(l2);
-  // pad the shorter list with zeros.
-  if (len1 < len2) {
-    l1 = padList(l1, len2 - len1);
-  } else {
-    l2 = padList(l2, len1 - len2);
-  }
-  PartialSum psum = helper(l1, l2);
-  if (psum.carry > 0) {
-    ListNode rst = insertBefore(psum.sum, psum.carry);
-    return rst;
-  }
-  return psum.sum;
+    int len1 = length(l1);
+    int len2 = length(l2);    
+    if (len1 < len2) {                  // pad the shorter list with zeros.
+        l1 = padList(l1, len2 - len1);
+    } else {
+        l2 = padList(l2, len1 - len2);
+    }
+    PartialSum psum = helper(l1, l2);
+    if (psum.carry > 0) {
+        ListNode rst = insertBefore(psum.sum, psum.carry);
+        return rst;
+    }
+    return psum.sum;
 }
 public PartialSum helper(ListNode l1, ListNode l2) {
-  if (l1 == null && l2 == null) {
-    PartialSum psum = new PartialSum();
+    if (l1 == null && l2 == null) {
+        PartialSum psum = new PartialSum();
+        return psum;
+    }    
+    PartialSum psum = helper(l1.next, l2.next);         // add smaller digits recursively.
+    int val = psum.carry + l1.val + l2.val;
+    ListNode rst = insertBefore(psum.sum, val % 10);
+    psum.sum = rst;
+    psum.carry = val / 10;
     return psum;
-  }
-  // add smaller digits recursively.
-  PartialSum psum = helper(l1.next, l2.next);
-  int val = psum.carry + l1.val + l2.val;
-  ListNode rst = insertBefore(psum.sum, val % 10);
-  psum.sum = rst;
-  psum.carry = val / 10;
-  return psum;
 }
 public ListNode padList(ListNode head, int padding) {
-  ListNode node = head;
-  for (int i = 0; i < padding; i++) {
-    node = insertBefore(node, 0);
-  }
-  return node;
+    ListNode node = head;
+    for (int i = 0; i < padding; i++) {
+        node = insertBefore(node, 0);
+    }
+    return node;
 }
 public ListNode insertBefore(ListNode head, int data) {
-  ListNode node = new ListNode(data);
-  if (head != null) {
-    node.next = head;
-  }
-  return node;
+    ListNode node = new ListNode(data);
+    if (head != null) {
+        node.next = head;
+    }
+    return node;
 }
 public int length(ListNode node) {
-  int len = 0;
-  while (node != null) {
-    len++;
-    node = node.next;
-  }
-  return len;
+    int len = 0;
+    while (node != null) {
+        len++;
+        node = node.next;
+    }
+    return len;
 }
