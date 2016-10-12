@@ -5,14 +5,14 @@ push, pop, peek and isEmpty.
 Time complexity: O(n^2). Space complexity: O(n).          
 void sort(Stack<Integer> s) {
     Stack<Integer> r = new Stack<Integer>();
-    while (!s.empty()) {          // insert each element in s in sorted order into r.
+    while (!s.empty()) {                      // insert each element in s in sorted order into r.
         int tmp = s.pop();
         while (!r.empty() && r.peek() > tmp) {
             s.push(r.pop());
         }
-        r.push(s.pop());
+        r.push(tmp);
     }
-    while (!r.empty()) {
+    while (!r.empty()) {         // copy the elements from r back into s.
         s.push(r.pop());
     }
 }
