@@ -13,7 +13,7 @@ boolean checkBST(TreeNode root) {
         return false;
     }
     last = root.val;
-    if (!checkBST(root.left)) {
+    if (!checkBST(root.right)) {
         return false;
     }
     return true;
