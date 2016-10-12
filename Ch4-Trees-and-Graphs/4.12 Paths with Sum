@@ -1,0 +1,28 @@
+You are given a binary tree in which each node contains an integer value (which might be positive or negative). Design an algorithm
+to count the number of paths that sum to a given value. The path does not need to start or end at the root or leaf, but it must go
+downwards (traveling only from parent nodes to child nodes).
+
+Solution 1: Brute force.
+int countPaths(TreeNode root, int target) {
+    if (root == null) {
+        return 0;
+    }
+    int pathsFromRoot = helper(root, target, 0);
+    int left = countPaths(root.left, target);
+    int right = countPaths(root.right, target);
+    return pathsFromRoot + left + right;
+}
+int helper(TreeNode root, int target, int curSum) {
+    if (root == null) {
+        return 0;
+    }
+    curSum += root.val;
+    int count = 0;
+    if (curSum == target) {
+        count++;
+    }
+    count += helper(root.left, target, curSum);
+    count += helper(root.right, target, curSum);
+    return count;
+}
+
