@@ -1,0 +1,40 @@
+Given a sorted array of strings that is interspersed with empty strings, write a method to find the location of a given string.
+Example: 
+Inout: ball, {"at", "", "", "", "ball", "", "", "car", "", "", "dad", "", ""}
+Output: 4
+
+int search(String[] strs, String s) {
+    return search(strs, s, 0, strs.length - 1);
+}
+int search(String[] strs, String s, int first, int last) {
+    if (first > last) {
+        return -1;
+    }
+    int mid = (first + last) / 2;
+    if (strs[mid].length() == 0) {
+        int left = mid - 1;
+        int right = mid + 1;
+        while (true) {
+            if (left < first && right > last) {
+                return -1;
+            }
+            if (right <= last && strs[right].length() > 0) {
+                mid = right;
+                break;
+            }
+            if (left >= first && strs[left].length() > 0) {
+                mid = left;
+                break;
+            }
+            right++;
+            left--;
+        }        
+    }
+    if (s.equals(strs[mid])) {
+        return mid;
+    } else if (strs[mid].compareTo(s) < 0) {
+        return search(strs, s, mid + 1, last);
+    } else {
+        return search(strs, s, first, mid - 1);
+    }
+}   
