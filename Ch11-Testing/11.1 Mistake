@@ -1,0 +1,14 @@
+Find the mistake(s) in the following code:
+unsigned int i;
+for (i = 100; i >= 0; --i) 
+    printf("%d\n", i);
+    
+two mistakes:
+1, an unsigned int will always >= 0, the for loop will loop infinitely, it should be i > 0.
+2, use %u in place of %d.
+
+unsigned int i;
+for (i = 100; i > 0; --i) 
+    printf("%u\n", i);
+
+it will print the list of all numbers from 100 to 1, in descending order.  
