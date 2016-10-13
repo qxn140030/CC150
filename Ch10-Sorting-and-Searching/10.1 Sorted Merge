@@ -1,0 +1,15 @@
+You are given two sorted arrays, A and B, where A has a large enough buffer at the end to hold B. Write a method to merge
+B into A in sorted order.
+
+void merge(int[] a, in[] b, int m, int n) {
+    int pa = m - 1;
+    int pb = n - 1;
+    int i = m + n - 1;
+    while (pb >= 0) {
+        if (pa >= 0 && a[pa] >= b[pb]) {
+            a[i--] = a[pa--];
+        } else {
+            a[i--] = a[pb--];
+        }
+    }
+}
