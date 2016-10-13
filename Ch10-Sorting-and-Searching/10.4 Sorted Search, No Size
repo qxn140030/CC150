@@ -1,0 +1,26 @@
+You are given an array-like data structure Listy whick lacks a size method. It does, however, have an elementAt(i) method
+that returns the element at index i in O(1) time. If i is beyond the bounds of the data structure, it returns -1. (For
+this reason, the data structure only supports positive integers.) Given a Listy which contains sorted, positive integers,
+find the index at which an element x occurs. If x occurs multiple times, you may return any index.
+
+int search(Listy list, int val) {
+    int i = 1;
+    while (list.elementAt(i) != -1 && list.elementAt(i) < val) {
+        i *= 2;
+    }
+    return binarySearch(list, val, i / 2, i);
+}
+int binarySearch(Listy list, int val, int start, int end) {
+    while (start <= end) {
+        int mid = (start + end) / 2;
+        int midVal = list.elementAt(mid);
+        if (midVal == -1 || midVal > val) {
+            end = mid - 1;
+        } else if (midVal < val) {
+            start = mid + 1;
+        } else {
+            return mid;
+        }
+    }
+    return -1;
+}
