@@ -1,0 +1,48 @@
+A magic index in an array A[1...n - 1] is defined to be an index such that A[i] = i. Given a sorted array of distinct
+integers, write a method to find a magic index, if one exists, in array A.
+Follow up:
+What if the values are not distinct?
+
+int magicIndex(int[] arr) {
+    int start = 0;
+    int end = arr.length - 1;
+    while (start + 1 < end) {
+        int mid = (start + end) / 2;
+        if (arr[mid] == mid) {
+            return mid;
+        } else if (arr[mid] < mid) {
+            start = mid;
+        } else {
+            end = mid;
+        }
+    }
+    if (arr[start] == start) {
+        return start;
+    }
+    if (arr[end] == end) {
+        return end;
+    }
+    return -1;
+}
+
+int magicIndex(int[] arr) {                 // array contains duplicates.
+    return helper(arr, 0, arr.length - 1);
+}
+int helper(int[] arr, int start, int end) {
+    if (start > end) {
+        return -1;
+    }
+    int midIndex = (start + end) / 2;
+    int midVal = arr[midIndex];
+    if (midIndex == midVal) {
+        return midIndex;
+    }
+    int leftIndex = Math.min(midIndex - 1, midVal);
+    int left = helper(arr, start, leftIndex);
+    if (left >= 0) {
+        return left;
+    }
+    int rightIndex = Math.max(midIndex + 1, midVal);
+    int left = helper(arr, rightIndex, end);
+    return right;
+}
